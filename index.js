@@ -10,7 +10,7 @@ nunjucks.configure('views', {
     express: app
 });
 
-app.get('/', async function (req, res) {
+app.get('/recipes', async function (req, res) {
   const p1 = await axios.get('https://recipe-d6ba.restdb.io/rest/recipes', {
     headers: {
       "x-apikey": restdb_api_key
@@ -20,6 +20,24 @@ app.get('/', async function (req, res) {
   console.log(p1.data)
 
   const html = await nunjucks.render('recipes.html', {recipes: p1.data})
+  
+  res.send(html)
+})
+
+app.get('/recipe/:id', async function(req, res){
+  let url = "https://recipe-d6ba.restdb.io/rest/recipes/" + req.params.id
+
+  console.error(url)
+
+  const p1 = await axios.get(url, {
+    headers: {
+      "x-apikey": restdb_api_key
+    }
+  });
+
+  console.log(p1.data)
+
+  const html = await nunjucks.render('recipe.html', {recipe: p1.data})
   
   res.send(html)
 })
