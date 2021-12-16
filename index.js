@@ -84,6 +84,24 @@ app.delete('/recipes/:id', async function(req, res){
 })
 
 
+app.put('/recipes/:id', express.json(), async function(req, res){
+  let url = `https://${restdb_db_url}.restdb.io/rest/recipes/${req.params.id}`
+
+  console.error(url)
+  console.error(req.body)
+
+  const p1 = await axios.put(url, req.body,{
+    headers: {
+      "x-apikey": restdb_api_key
+    }
+  });
+
+  console.log(p1)
+  
+  res.send("Updated")
+})
+
+
 app.listen(PORT, function () {
   console.log('Example app listening on port ' + PORT)
 })
