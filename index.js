@@ -12,7 +12,7 @@ nunjucks.configure('views', {
 });
 
 app.get('/', function(req, res){
-  const html = await nunjucks.render('index.html', {recipes: p1.data})
+  const html = nunjucks.render('index.html')
   res.send(html)
   res.send()
 })
