@@ -33,8 +33,8 @@ app.get('/recipes', async function (req, res) {
   //res.json(tab)
   
 
-  //const html = await nunjucks.render('recipes.html', {recipes: p1.data})
-  //res.send(html)
+  const html = await nunjucks.render('recipes.html', {recipes: p1.data})
+  res.send(html)
 })
 
 app.get('/recipe/:id', async function(req, res){
