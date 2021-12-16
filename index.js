@@ -21,9 +21,13 @@ app.get('/recipes', async function (req, res) {
 
   console.log(p1.data)
 
-  const html = await nunjucks.render('recipes.html', {recipes: p1.data})
+  //Send recipes back in JSON
+  //let tab = p1.data.map(e => {return {"title": e.name}})
+  //res.json(tab)
   
-  res.send(html)
+
+  //const html = await nunjucks.render('recipes.html', {recipes: p1.data})
+  //res.send(html)
 })
 
 app.get('/recipe/:id', async function(req, res){
@@ -58,8 +62,27 @@ app.post('/recipes', express.json(), async function(req, res){
 
   console.log(p1)
   
-  res.send("Yes")
+  res.send("Created")
 })
+
+
+app.delete('/recipes/:id', async function(req, res){
+  let url = `https://${restdb_db_url}.restdb.io/rest/recipes/${req.params.id}`
+
+  console.error(url)
+  console.error(req.body)
+
+  const p1 = await axios.delete(url, {
+    headers: {
+      "x-apikey": restdb_api_key
+    }
+  });
+
+  console.log(p1)
+  
+  res.send("Deleted")
+})
+
 
 app.listen(PORT, function () {
   console.log('Example app listening on port ' + PORT)
