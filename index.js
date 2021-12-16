@@ -3,6 +3,7 @@ const axios = require('axios')
 const app = express()
 const PORT = process.env.PORT || 5000 // this is very important
 const restdb_api_key = "d8ce0ced64a77494d2b0c54c3d12734c1ba99"
+const restdb_db_url = "recipe-d6ba"
 const nunjucks = require('nunjucks')
 
 nunjucks.configure('views', {
@@ -11,7 +12,8 @@ nunjucks.configure('views', {
 });
 
 app.get('/recipes', async function (req, res) {
-  const p1 = await axios.get('https://recipe-d6ba.restdb.io/rest/recipes', {
+  let url = `https://${restdb_db_url}.restdb.io/rest/recipes`
+  const p1 = await axios.get(url, {
     headers: {
       "x-apikey": restdb_api_key
     }
@@ -25,7 +27,7 @@ app.get('/recipes', async function (req, res) {
 })
 
 app.get('/recipe/:id', async function(req, res){
-  let url = "https://recipe-d6ba.restdb.io/rest/recipes/" + req.params.id
+  let url = `https://${restdb_db_url}.restdb.io/rest/recipes/${req.params.id}`
 
   console.error(url)
 
@@ -40,6 +42,23 @@ app.get('/recipe/:id', async function(req, res){
   const html = await nunjucks.render('recipe.html', {recipe: p1.data})
   
   res.send(html)
+})
+
+app.post('/recipes', express.json(), async function(req, res){
+  let url = `https://${restdb_db_url}.restdb.io/rest/recipes`
+
+  console.error(url)
+  console.error(req.body)
+
+  const p1 = await axios.post(url, req.body,{
+    headers: {
+      "x-apikey": restdb_api_key
+    }
+  });
+
+  console.log(p1)
+  
+  res.send("Yes")
 })
 
 app.listen(PORT, function () {
