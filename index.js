@@ -11,6 +11,13 @@ nunjucks.configure('views', {
     express: app
 });
 
+app.get('/', function(req, res){
+  const html = await nunjucks.render('index.html', {recipes: p1.data})
+  res.send(html)
+  res.send()
+})
+
+
 app.get('/recipes', async function (req, res) {
   let url = `https://${restdb_db_url}.restdb.io/rest/recipes`
   const p1 = await axios.get(url, {
