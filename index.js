@@ -6,6 +6,7 @@ const db_config = require("./restdb.json")
 const restdb_api_key = db_config.restdb_api_key
 const restdb_db_url = db_config.restdb_db_url
 const nunjucks = require('nunjucks')
+const cors = require('cors')
 
 nunjucks.configure('views', {
     autoescape: true,
@@ -51,6 +52,8 @@ passport.use(
 app.use(passport.initialize())
 
 app.use(express.json())
+
+app.use(cors())
 
 app.use('/users', userRoute)
 
