@@ -148,12 +148,12 @@ app.get('/recipe/:id', async function(req, res){
   res.json(p1.data)
 })
 
-app.post('/recipes', async function(req, res){
+app.post('/recipes', passport.authenticate('jwt', { session: false }), async function(req, res){
   let url = `https://${restdb_db_url}.restdb.io/rest/recipes`
 
   console.error(url)
   console.error(req.body)
-
+  req.body.created_by = req.user
   const p1 = await axios.post(url, req.body,{
     headers: {
       "x-apikey": restdb_api_key
