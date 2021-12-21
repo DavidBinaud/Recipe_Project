@@ -27,14 +27,7 @@ app.get('/recipes', async function (req, res) {
   });
 
   console.log(p1.data)
-
-  //Send recipes back in JSON
-  //let tab = p1.data.map(e => {return {"title": e.name}})
-  //res.json(tab)
-  
-
-  const html = await nunjucks.render('recipes.html', {recipes: p1.data})
-  res.send(html)
+  res.json(p1.data)
 })
 
 app.get('/recipe/:id', async function(req, res){
@@ -49,10 +42,7 @@ app.get('/recipe/:id', async function(req, res){
   });
 
   console.log(p1.data)
-
-  const html = await nunjucks.render('recipe.html', {recipe: p1.data})
-  
-  res.send(html)
+  res.json(p1.data)
 })
 
 app.post('/recipes', express.json(), async function(req, res){
