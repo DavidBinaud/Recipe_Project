@@ -2,8 +2,9 @@ const express = require('express')
 const axios = require('axios')
 const app = express()
 const PORT = process.env.PORT || 5000 // this is very important
-const restdb_api_key = "d8ce0ced64a77494d2b0c54c3d12734c1ba99"
-const restdb_db_url = "recipe-d6ba"
+const db_config = require("./restdb.json")
+const restdb_api_key = db_config.restdb_api_key
+const restdb_db_url = db_config.restdb_db_url
 const nunjucks = require('nunjucks')
 
 nunjucks.configure('views', {
@@ -26,7 +27,7 @@ const jwtOptions = {
   secretOrKey: secret
 }
 
-const users = [{ email: 'pcavalet@kaliop.com', password: 'kaliop' }]
+const userRoute = require('./user.js')
 
 passport.use(
   new JwtStrategy(jwtOptions, async function(payload, next) {
@@ -51,6 +52,7 @@ app.use(passport.initialize())
 
 app.use(express.json())
 
+app.use('/users', userRoute)
 
 const checkOwnership = async (req, res, next) => {
   console.error("USER TRYING", req.user)
