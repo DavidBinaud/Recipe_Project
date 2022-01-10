@@ -44,3 +44,7 @@ Le rendu du projet sera
 - Chaque fichier à sa propre utilité, il faut qu'ils soient court (voir modules avec calc)
 - Readme propre avec url du projet en prod, les choses implémentées, image
 - bien commenter
+
+##### Bonus
+APIDOC
+
