@@ -38,3 +38,9 @@ Le rendu du projet sera
 
     l'URL d'un github contenant les sources de votre projet ainsi qu'un readme qui explique comment lancer/installer le projet + les parties manquantes et pourquoi (si vous n'avez tout fait).
     l'URL de votre API + l'url de l'application finale (avec la partie Vue.js)
+
+
+###Requis pour rendu
+- Chaque fichier à sa propre utilité, il faut qu'ils soient court (voir modules avec calc)
+- Readme propre avec url du projet en prod, les choses implémentées, image
+- bien commenter
