@@ -40,7 +40,7 @@ Le rendu du projet sera
     l'URL de votre API + l'url de l'application finale (avec la partie Vue.js)
 
 
-###Requis pour rendu
+##### Requis pour rendu
 - Chaque fichier à sa propre utilité, il faut qu'ils soient court (voir modules avec calc)
 - Readme propre avec url du projet en prod, les choses implémentées, image
 - bien commenter
