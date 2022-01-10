@@ -12,20 +12,14 @@ restDb api doc: https://restdb.io/docs/rest-api#restdb
 TP noté
 
 Créez une API de gestion de recettes. Cette API doit contenir:
+- [x] une route pour récupérer une recette
+- [x] une route pour récupérer la liste des recettes
+- [x] une route pour ajouter une recette
+- [x] une route pour supprimer une recette
+- [x] une route pour modifier une recette
 
-    - [x] une route pour récupérer une recette
-
-    - [x] une route pour récupérer la liste des recettes
-
-    - [x] une route pour ajouter une recette
-
-    - [x] une route pour supprimer une recette
-
-    - [x] une route pour modifier une recette
-
-    - [x] une route pour créer un compte
-
-    - [x] une route pour se connecter (récupérer un JWT)
+- [x] une route pour créer un compte
+- [x] une route pour se connecter (récupérer un JWT)
 
 - [x] Les routes liées à la creation/suppression/modification de recettes doivent être uniquement accessibles aux personnes connectés. 
 - [x] La seule personne pouvant modifier ou supprimer une recette doit être la personne qui l'a créé.
@@ -36,7 +30,7 @@ Créez une API de gestion de recettes. Cette API doit contenir:
 
 - [x] Le projet doit être déployé sur Heroku.
 
-- [] ATTENTION: l'api doit communiquer uniquement en JSON (res.json avec express).
+- [ ] ATTENTION: l'api doit communiquer uniquement en JSON (res.json avec express).
 
 - [x] ATTENTION 2: pour communiquer avec votre serveur express depuis une page web, vous aurez besoin de gérer les CORS. voir le middleware express cors
 
