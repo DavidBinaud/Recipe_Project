@@ -13,8 +13,6 @@ nunjucks.configure('views', {
     express: app
 });
 
-
-
 ////////////////////////////////////////////
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
@@ -53,71 +51,19 @@ app.use(passport.initialize())
 
 app.use(express.json())
 
+// CORS headers
 app.use(cors())
 
-app.use('/users', userRoute)
+// Routers
+const usersRouter = require('./routes/user')
+const recipeRouter = require('./routes/recipe')
 
-const checkOwnership = async (req, res, next) => {
-  console.error("USER TRYING", req.user)
-
-  let urlGetRecipe = `https://${restdb_db_url}.restdb.io/rest/recipes/${req.params.id}`
-
-  const get = await axios.get(urlGetRecipe, {
-    headers: {
-      "x-apikey": restdb_api_key
-    }
-  });
-  console.error("GET DATA:", get.data);
-  req.user.isOwner = get.data.created_by[0]._id === req.user._id
-  next()
-}
-
-
-
-//exemple d'accès limité
-app.get('/private', passport.authenticate('jwt', { session: false }), (req, res) => {
-  res.send('private. user:' + req.user.email)
-})
-
-
-//permet de récuperer un JWT si email et pass correspond
-app.post('/login', async (req, res) => {
-  const email = req.body.email
-  const password = req.body.password
-
-  if (!email || !password) {
-    res.status(401).json({ error: 'Email or password was not provided.' })
-    return
-  }
-
-  let url = `https://${restdb_db_url}.restdb.io/rest/recipes-users`
-  const users = await axios.get(url, {
-      headers: {
-        "x-apikey": restdb_api_key
-      }
-    });
-  console.log(users);
-  const user = users.data.find(user => user.email === email)
-
-  console.log("\n\nUSER FOUND:")
-  console.log(user)
-  if (!user || user.password !== password) {
-    res.status(401).json({ error: 'Email / password do not match.' })
-    return
-  }
-
-  const userJwt = jwt.sign({ email: user.email }, secret)
-
-  res.json({ jwt: userJwt })
-})
-
+// Routes
+app.use('/recipe', recipeRouter)
+app.use('/recipes', recipeRouter)
+app.use('/users', usersRouter)
 
 ///////////////////////////////////////////
-
-
-
-
-
 
 app.get('/', function(req, res){
   const html = nunjucks.render('index.html')
