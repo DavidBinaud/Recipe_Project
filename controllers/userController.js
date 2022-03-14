@@ -143,11 +143,11 @@ exports.user_get_informations =  async function (req, res) {
 exports.checkOwnership = async (req, res, next) => {
     console.error("USER TRYING", req.user)
     
-    var userId = req.params.id
+    let userId = req.params.id
 
-    var request = await axios ({
+    let request = await axios ({
         method: 'GET',
-        url: `https://${restdb_db_url}.restdb.io/rest/recipes-users/${userId}`,
+        url: `https://${restdb_db_url}.restdb.io/rest/recipes/${userId}`,
         headers:
         {
             'cache-control': 'no-cache',
@@ -156,9 +156,17 @@ exports.checkOwnership = async (req, res, next) => {
         }
     })
 
+    if (request.data.created_by === undefined) {
+        return res.status(404).json({ error: "Recipe dos not exist" })
+    }
+
     console.error("GET DATA:", request.data);
-    req.user.isOwner = request.data.created_by[0]._id === req.user._id
-    next()
+    try {
+        req.user.isOwner = request.data.created_by[0]._id === req.user._id
+        next()
+    } catch {
+        
+    }
   }
   
   

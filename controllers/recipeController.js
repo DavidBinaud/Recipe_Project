@@ -1,5 +1,5 @@
 const axios = require("axios")
-const db_config = require("./restdb.json")
+const db_config = require("../restdb.json")
 const restdb_api_key = db_config.restdb_api_key
 const restdb_db_url = db_config.restdb_db_url
 
@@ -17,22 +17,22 @@ exports.get_index = async function (req, res) {
             }
         })
 
-        let result = request.data.map(e => {
-            return {
-                "id": e._id,
-                "name": e.name,
-                "steps": e.steps,
-                "items": e.items,
-                "created_by": {
-                    "id": e.created_by[0].id,
-                    "username": e.created_by[0].username
-                }
-            }
+        // let result = request.data.map(e => {
+        //     return {
+        //         "id": e._id,
+        //         "name": e.name,
+        //         "steps": e.steps,
+        //         "items": e.items,
+        //         "created_by": {
+        //             "id": e.created_by.id,
+        //             "username": e.created_by.username
+        //         }
+        //     }
 
-        })
+        // })
 
-        console.log(result)
-        res.send(result)
+        // console.log(result)
+        res.send(request.data)
     } catch (error) {
         processError(error, res)
     } 
