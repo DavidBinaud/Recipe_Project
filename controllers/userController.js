@@ -6,7 +6,9 @@ const restdb_db_url = db_config.restdb_db_url
 const jwt = require('jsonwebtoken')
 const secret = 'thisismysecretForJWT'
 
-// Create a user
+/**
+ * Creates a user
+ */ 
 exports.user_create =  async function (req, res) {
     try {
         var user = req.body;
@@ -24,18 +26,19 @@ exports.user_create =  async function (req, res) {
             json: true 
         })
     
-        console.log(request)
-        if(request.status === 201){
-            res.status(201).json("Created")
-        } else {
-            res.status(401).json("There was an error")
-        }
+        console.log(request.status)
+
+        res.status(request.status).json({status:"ok"})
+        return
     } catch (error) {
         processError(error, res)
     }
 }
 
-// Delete a user
+
+/**
+ * Deletes a user
+ */ 
 exports.user_delete =  async function (req, res) {
     try {
         var userId = req.params.id
@@ -52,13 +55,15 @@ exports.user_delete =  async function (req, res) {
         })        
 
         console.log(request)
-        res.send(request.data)
+        res.status(request.status)
     } catch (error) {
         processError(error, res)
     }
 }
 
-// Update a user
+/**
+ * Updates a user's info
+ */ 
 exports.user_update =  async function (req, res) {
     try {
         var userId = req.params.id
@@ -79,13 +84,16 @@ exports.user_update =  async function (req, res) {
         })
 
         console.log(request)
-        // res.send(result)
+        res.status(request.status)
     } catch (error) {
         processError(error, res)
     }
 }
 
-// Authenticate as a user
+/**
+ * Authenticates as a user 
+ * Returns the a jwt if email and password match
+ */ 
 exports.user_authenticate =  async function (req, res) {
         const email = req.body.email
         const password = req.body.password
@@ -123,7 +131,9 @@ exports.user_authenticate =  async function (req, res) {
         res.json({ jwt: userJwt }) 
 }
 
-// Access a user
+/**
+ * Accesses a user's data
+ */ 
 exports.user_get_informations =  async function (req, res) {
     try {
         var userId = req.params.id
@@ -146,7 +156,9 @@ exports.user_get_informations =  async function (req, res) {
     }
 }
 
-
+/**
+ *  Checks wether a user owns the recipe he wants to update or delete
+ */ 
 exports.checkOwnership = async (req, res, next) => {
     console.error("USER TRYING", req.user)
     
@@ -164,7 +176,7 @@ exports.checkOwnership = async (req, res, next) => {
     })
 
     if (!request.data.hasOwnProperty("created_by")) {
-        return res.status(404).json({ error: "Recipe dos not exist" })
+        return res.status(404).json({ error: "Recipe does not exist" })
     }
 
     console.error("GET DATA:", request.data);
@@ -173,43 +185,6 @@ exports.checkOwnership = async (req, res, next) => {
     next()
   }
   
-  //permet de récuperer un JWT si email et pass correspond
-  exports.user_authenticates = async function (req, res) {
-    const email = req.body.email
-    const password = req.body.password
-  
-    if (!email || !password) {
-      res.status(401).json({ error: 'Email or password was not provided.' })
-      return
-    }
-  
-    let users = await axios ({
-        method: 'GET',
-        url: `https://${restdb_db_url}.restdb.io/rest/recipes-users`,
-        headers:
-        {
-            'cache-control': 'no-cache',
-            'x-apikey': restdb_api_key,
-            'content-type': 'application/json'
-        }
-    })
-
-
-    console.log(users);
-    const user = users.data.find(user => user.email === email)
-  
-    console.log("\n\nUSER FOUND:")
-    console.log(user)
-    if (!user || user.password !== password) {
-      res.status(401).json({ error: 'Email / password do not match.' })
-      return
-    }
-  
-    const userJwt = jwt.sign({ email: user.email }, secret)
-  
-    res.json({ jwt: userJwt })
-  }
-
 function processError(error, res) {
     console.log(error.config)
     if (error.response) { // get response with a status code not in range 2xx

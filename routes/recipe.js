@@ -9,7 +9,9 @@ const recipeController = require('../controllers/recipeController')
  */
 
 
-// GET request for getting a recipe
+/**
+ * GET request for getting a recipe
+ */ 
 router.get('/:id', recipeController.recipe_get_informations)
 
 module.exports = router

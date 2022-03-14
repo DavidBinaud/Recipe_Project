@@ -14,7 +14,10 @@ const jwtOptions = {
   secretOrKey: secret
 }
 
-
+/**
+ * Checks whether the client token corresponds to any user jsw in db or not
+ * Returns user if there is a match
+ */
 exports.passportJWT = passport.use(
   new JwtStrategy(jwtOptions, async function(payload, next) {
     let url = `https://${restdb_db_url}.restdb.io/rest/recipes-users`

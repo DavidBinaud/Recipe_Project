@@ -4,7 +4,9 @@ const restdb_api_key = db_config.restdb_api_key
 const restdb_db_url = db_config.restdb_db_url
 
 
-// Display list of all recipes
+/**
+ * Displays the list of all recipes in db
+*/ 
 exports.get_index = async function (req, res) {
     try {
         var request = await axios({
@@ -17,28 +19,21 @@ exports.get_index = async function (req, res) {
             }
         })
 
-        // let result = request.data.map(e => {
-        //     return {
-        //         "id": e._id,
-        //         "name": e.name,
-        //         "steps": e.steps,
-        //         "items": e.items,
-        //         "created_by": {
-        //             "id": e.created_by.id,
-        //             "username": e.created_by.username
-        //         }
-        //     }
+        let result = request.data.map(e => {
+            return trimRecipe(e)
+        })
 
-        // })
-
-        // console.log(result)
-        res.send(request.data)
+        res.send(result)
     } catch (error) {
         processError(error, res)
     } 
 }
 
-// Access a recipe
+/**
+ * Returns a recipe from its id
+ * 
+ * @apiParam {String} id id of the recipe
+ */ 
 exports.recipe_get_informations = async function (req, res) {
     try {
         var recipeId = req.params.id
@@ -52,15 +47,23 @@ exports.recipe_get_informations = async function (req, res) {
                 'content-type': 'application/json'
             }
         })
+
+        if (request.data.length === 0) {
+            return res.status(404).json({ error:'Recipe not found'})
+        }
+
+        let data = trimRecipe(request.data)
     
-        console.log(request.data)
-        res.json(request.data)
+        console.log(data)
+        res.json(data)
     } catch (error) {
         processError(error, res)
     }
 }
 
-// Create a recipe
+/**
+ * Creates a recipe
+*/ 
 exports.recipe_create = async function (req, res) {
     try {
         req.body.created_by = req.user
@@ -81,13 +84,16 @@ exports.recipe_create = async function (req, res) {
     
         console.log(request)
         
-        res.json("Created")
+        res.status(201).json({"status":"Created"})
+        return
     } catch (error) {
         processError(error, res)
     }
 }
 
-// Delete a recipe
+/**
+ * Deletes a recipe
+ */ 
 exports.recipe_delete = async function (req, res) {
     try {
         console.error("USER IN DELETE", req.user)
@@ -114,18 +120,21 @@ exports.recipe_delete = async function (req, res) {
     }
 }
 
-// Upload a recipe
+/**
+ * Uploads a recipe
+ */
 exports.recipes_update = async function (req, res) {
     try {
-        console.error("USER IN PUT", req.user)
+        console.error("USER INPUT", req.body)
 
-        var recipe = req.body;
+        let recipeId = req.params.id;
+        let recipe = req.body;
 
         if(req.user.isOwner) {
-            var request = await axios ({ 
+            let request = await axios ({ 
                 method: 'PUT',
-                data: { _id: recipe.id, title: recipe.title, description: recipe.description, creatorId: recipe.creatorId },
-                url: `https://${restdb_db_url}.restdb.io/rest/recipes/${req.params.id}`,
+                data: recipe,
+                url: `https://${restdb_db_url}.restdb.io/rest/recipes/${recipeId}`,
                 headers: {
                     'cache-control': 'no-cache',
                     'x-apikey': restdb_api_key,
@@ -134,14 +143,44 @@ exports.recipes_update = async function (req, res) {
                 json: true 
             })
         
-            console.log(request)
-            res.send(request)
+            console.log(request.status)
+            res.status(201).json({'status':'ok'})
+            return
         } else {
-            res.status(403).send("Wrong User")
+            res.status(403).json({ "error":"Wrong User" })
+            reutrn
         }
     } catch (error) {
         processError(error, res)       
     }
+}
+
+/**
+ * Returns an object with desired informations from a recipe
+ * @param {Object} e 
+ * @returns Object
+ */
+function trimRecipe(e) {
+    let data = {
+        "id": e._id,
+        "name": e.name,
+        "steps": e.steps,
+        "items": e.items
+    }
+
+    if (e.hasOwnProperty("created_by")) {
+        data.created_by = {
+            "id": e.created_by[0]._id,
+            "username": e.created_by[0].username
+        }
+    } else {
+        data.created_by = {
+            "id": undefined,
+            "username": "anon"
+        }
+    }
+
+    return data
 }
 
 function processError(error, res) {

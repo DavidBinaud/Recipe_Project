@@ -5,13 +5,20 @@ const cors = require('cors')
 const passport = require('passport')
 
 ////////////////////////////////////////////
+/////////////// Middlewares ////////////////
+////////////////////////////////////////////
 
+// JWT middleware
 app.use(passport.initialize())
 
 app.use(express.json())
 
 // CORS headers
 app.use(cors())
+
+////////////////////////////////////////////
+///////////////// Routing //////////////////
+////////////////////////////////////////////
 
 // Routers
 const userRouter = require('./routes/user')
@@ -22,11 +29,13 @@ const recipeRouter = require('./routes/recipe')
 // Routes
 app.use('/recipe', recipeRouter)
 app.use('/recipes', recipesRouter)
-app.use('/user', userRouter)
+app.use('/users', userRouter)
 app.use('/login', loginRouter)
 
-///////////////////////////////////////////
+////////////////////////////////////////////
+///////////////// Lauching /////////////////
+////////////////////////////////////////////
 
 app.listen(PORT, function () {
-  console.log('Example app listening on port ' + PORT)
+  console.log('app listening on port ' + PORT)
 })
