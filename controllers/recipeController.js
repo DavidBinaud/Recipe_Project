@@ -1,6 +1,7 @@
 const myCorsApiKey = "61dc114404970f0d8b62936e"
 const axios = require("axios")
-
+const db_config = require("./restdb.json")
+const restdb_api_key = db_config.restdb_api_key
 
 
 // Display list of all recipes
@@ -8,10 +9,10 @@ exports.index = async function (req, res) {
     try {
         var request = await axios({
             method: 'GET',
-            url: 'https://simplefood-97be.restdb.io/rest/recipe',
+            url: `https://${restdb_db_url}.restdb.io/rest/recipes`,
             headers: {
                 'cache-control': 'no-cache',
-                'x-apikey': myCorsApiKey,
+                'x-apikey': restdb_api_key,
                 'content-type': 'application/json'
             }
         })
@@ -19,8 +20,13 @@ exports.index = async function (req, res) {
         let result = request.data.map(e => {
             return {
                 "id": e._id,
-                "title": e.title,
-                "description": e.description
+                "name": e.name,
+                "steps": e.steps,
+                "items": e.items,
+                "created_by": {
+                    "id": e.created_by[0].id,
+                    "username": e.created_by[0].username
+                }
             }
 
         })
@@ -43,6 +49,18 @@ exports.index = async function (req, res) {
         }
     } 
 }
+
+app.get('/recipes', async function (req, res) {
+    let url = 
+    const p1 = await axios.get(url, {
+      headers: {
+        "x-apikey": 
+      }
+    });
+  
+    console.log(p1.data)
+    res.json(p1.data)
+  })
 
 
 // Access a recipe
