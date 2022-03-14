@@ -1,7 +1,7 @@
 {
-  "name": "heroku-demo",
+  "name": "recipe_project",
   "version": "1.0.0",
-  "description": "",
+  "description": "Node Recipe Project https://pierrecavalet-apidae.netlify.app/tp/heroku.html",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -12,10 +12,18 @@
   "dependencies": {
     "axios": "^0.24.0",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "jsonwebtoken": "^8.5.1",
     "nunjucks": "^3.2.3",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DavidBinaud/Recipe_Project.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DavidBinaud/Recipe_Project/issues"
+  },
+  "homepage": "https://github.com/DavidBinaud/Recipe_Project#readme"
 }

@@ -2,18 +2,18 @@ const express = require('express')
 const router = express.Router()
 
 // Require controller modules
-const userController = require('../controllers/userController')
+const userController = require('../controllers/userController.js')
 
 /**
  * users routes
  */
 
 // POST request for creating User
-router.post('/user/create', userController.user_create)
+router.post('/', userController.user_create)
 
 // GET request for deleting user, user must be logged 
 // #TODO
-router.get('/:id/delete', userController.user_delete)
+router.delete('/:id', userController.user_delete)
 
 // POST request for updating user, user must be logged 
 // #TODO
@@ -26,6 +26,6 @@ router.post('/login', userController.user_authenticate)
 
 // GET request for deleting user 
 // #TODO
-router.get('/:id/getUser', userController.user_get_informations)
+router.get('/:id', userController.user_get_informations)
 
 module.exports = router
