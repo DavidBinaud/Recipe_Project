@@ -1,12 +1,10 @@
-const express = require('express')
 const axios = require("axios")
 const db_config = require("../restdb.json")
 const restdb_api_key = db_config.restdb_api_key
 const restdb_db_url = db_config.restdb_db_url
-const app = express()
 
 const jwt = require('jsonwebtoken')
-const passport = require('passport')
+const secret = 'thisismysecretForJWT'
 
 // Create a user
 exports.user_create =  async function (req, res) {
@@ -97,23 +95,32 @@ exports.user_authenticate =  async function (req, res) {
           return
         }
 
-        find(email)
-            .then(user => {
-                console.log(user)
-                if (!user) {
-                    res.status(401).json({ error: 'User is not defined.' })
-                    return
-                } else if (user.password !== password) {
-                    res.status(401).json({ error: 'Email / password do not match.' })
-                    return
-                }
+        var users = await axios({
+            method: 'GET',
+            url: `https://${restdb_db_url}.restdb.io/rest/recipes-users`,
+            headers:
+            {
+                'cache-control': 'no-cache',
+                'x-apikey': restdb_api_key,
+                'content-type': 'application/json'
+            }
+        })
+    
 
-                const userJwt = jwt.sign({ email: user.email }, secret)
-                res.json({ jwt: userJwt })
-            })
+        console.log(users);
+        const user = users.data.find(user => user.email === email)
 
+        console.log("\nUSER FOUND:")
+        console.log(user)
 
-       
+        if (!user || user.password !== password) {
+          res.status(401).json({ error: 'Email / password do not match.' })
+          return
+        }
+      
+        const userJwt = jwt.sign({ email: user.email }, secret)
+      
+        res.json({ jwt: userJwt }) 
 }
 
 // Access a user
@@ -156,29 +163,18 @@ exports.checkOwnership = async (req, res, next) => {
         }
     })
 
-    if (request.data.created_by === undefined) {
+    if (!request.data.hasOwnProperty("created_by")) {
         return res.status(404).json({ error: "Recipe dos not exist" })
     }
 
     console.error("GET DATA:", request.data);
-    try {
-        req.user.isOwner = request.data.created_by[0]._id === req.user._id
-        next()
-    } catch {
-        
-    }
+    
+    req.user.isOwner = request.data.created_by[0]._id === req.user._id
+    next()
   }
   
-  
-  
-  //exemple d'accès limité
-  app.get('/private', passport.authenticate('jwt', { session: false }), (req, res) => {
-    res.send('private. user:' + req.user.email)
-  })
-  
-  
   //permet de récuperer un JWT si email et pass correspond
-  exports.user_anthenticates = async function (req, res) {
+  exports.user_authenticates = async function (req, res) {
     const email = req.body.email
     const password = req.body.password
   
