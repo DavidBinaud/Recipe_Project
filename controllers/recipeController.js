@@ -171,7 +171,8 @@ function trimRecipe(e) {
     if (e.hasOwnProperty("created_by")) {
         data.created_by = {
             "id": e.created_by[0]._id,
-            "username": e.created_by[0].username
+            "username": e.created_by[0].username,            
+            "email": e.created_by[0].email
         }
     } else {
         data.created_by = {
