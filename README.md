@@ -7,9 +7,7 @@ Ce projet propose aux utilisateurs de créer un compte afin d'accéder à une li
 
 ## Back
 
-[Recipe_Project @ 90e2146](https://github.com/DavidBinaud/Recipe_Project/tree/90e2146f59f152bdb58d19beed324b64462a52ad)
-
-Est le module backend développé avec node.jss qui fonctionne avec une bd restdb.io
+Le module backend développé avec node.jss qui fonctionne avec une bd restdb.io
 
 ### Installation (linux macOS)
 
