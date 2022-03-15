@@ -3,17 +3,25 @@
 **Auteurs** : David Binaud - Clément Delafontaine
 Licence APIDAE - IUT Montpellier Sète
 
-# Installation
+Ce projet propose aux utilisateurs de créer un compte afin d'accéder à une liste de recettes écrites par la communauté. Chacun peut créer et proposer ses recettes. 
+
+## Back
+
+[Recipe_Project @ 90e2146](https://github.com/DavidBinaud/Recipe_Project/tree/90e2146f59f152bdb58d19beed324b64462a52ad)
+
+Est le module backend développé avec node.jss qui fonctionne avec une bd restdb.io
+
+### Installation (linux macOS)
 
 Pour déployer le serveur sur votre machine :
 
-- clonez le projet. Assurez-vous que les fichiers package.json sont présents à la racine du projet et dans un terminal lancez la commande suivante :
+- Cloner le module. Assurez-vous que les fichiers package.json sont présents à la racine du projet et dans un terminal lancez la commande suivante :
 
 ```shell
 npm install
 ```
 
-- créez un fichier *restdb.json* avec les éléments suivants :
+- Créer un fichier *restdb.json* avec les éléments suivants :
 
 ```json
 {
@@ -28,9 +36,7 @@ npm install
 node index.js
 ```
 
-
-
-# TODO
+# ATTENDUS
 
 Créez une API de gestion de recettes. Cette API doit contenir:
 - [x] une route pour récupérer une recette
@@ -54,28 +60,4 @@ Créez une API de gestion de recettes. Cette API doit contenir:
 - [x] ATTENTION: l'api doit communiquer uniquement en JSON (res.json avec express).
 
 - [x] ATTENTION 2: pour communiquer avec votre serveur express depuis une page web, vous aurez besoin de gérer les CORS. voir le middleware express cors
-
-## Le rendu du projet sera
-
-    l'URL d'un github contenant les sources de votre projet ainsi qu'un readme qui explique comment lancer/installer le projet + les parties manquantes et pourquoi (si vous n'avez tout fait).
-    l'URL de votre API + l'url de l'application finale (avec la partie Vue.js)
-
-
-##### Requis pour rendu
-- Chaque fichier à sa propre utilité, il faut qu'ils soient court (voir modules avec calc)
-- Readme propre avec url du projet en prod, les choses implémentées, image
-- bien commenter
-
-## misc
-
-Node Recipe Project
-https://pierrecavalet-apidae.netlify.app/tp/heroku.html
-
-express doc: https://expressjs.com/fr/guide/routing.html
-axios doc: https://axios-http.com/docs/intro
-nunjucks doc: https://mozilla.github.io/nunjucks/
-restDb api doc: https://restdb.io/docs/rest-api#restdb
-
-##### Bonus
-APIDOC
 
