@@ -128,7 +128,7 @@ exports.user_authenticate =  async function (req, res) {
       
         const userJwt = jwt.sign({ email: user.email }, secret)
       
-        res.json({ jwt: userJwt }) 
+        res.json({ jwt: userJwt , username: user.username}) 
 }
 
 /**
